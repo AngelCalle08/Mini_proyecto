@@ -1,0 +1,13 @@
+home:
+    path: /
+    controller: App\Controller\LocalController::home
+
+modificar_calificacion:
+    path: /calificacion/modificar/{id}
+    controller: App\Controller\LocalController::modificarCalificacion
+    requirements:
+        id: \d+
+
+eliminar_estudiante:
+    path: /estudiante/eliminar/{id}
+    controller: App\Controller\LocalController::eliminarEstudiante

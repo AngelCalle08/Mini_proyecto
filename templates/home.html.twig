@@ -1,0 +1,96 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <img src="{{ asset('images/programador-removebg-preview.png') }}" alt="" class="portada" />
+    <img src="{{ asset('images/grupo_estudiantes.png') }}" alt="" class="estudiantes" />
+
+    {% if error %}
+        <script>
+            alert("{{ error }}");
+        </script>
+    {% endif %}
+
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success">{{ message }}</div>
+    {% endfor %}
+
+    {% for message in app.flashes('success') %}
+    <div class="alert alert-success">{{ message }}</div>    
+    {% endfor %}
+
+    <form method="post" action="{{ path('home') }}">
+        <label for="nombre_estudiante">Nombre del Estudiante:</label>
+        <input type="text" id="nombre_estudiante" name="nombre_estudiante" required>
+
+        <label for="asignatura">Asignatura:</label>
+        <input type="text" id="asignatura" name="asignatura" value="Programación I" readonly>
+
+        <label for="calificacion">Calificación:</label>
+        <input type="number" id="calificacion" name="calificacion" step="0.01" required>
+
+        <button class="registro" type="submit">Registrar Calificación</button>
+    </form>
+
+    <h2>Estudiantes Registrados:</h2>
+    <table border="1">
+    <thead>
+        <tr>
+            <th>Nombre del Estudiante</th>
+            <th>Calificación</th>
+            <th>Asignatura</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for estudiante in estudiante %}
+            <tr>
+                <td>{{ estudiante.nombre_estudiante }}</td>
+                <td>{{ estudiante.calificacion }}</td>
+                <td>{{ estudiante.asignatura }}</td>
+                <td>
+                    <a href="#" class="btn-modificar" data-bs-toggle="modal" data-bs-target="#modalModificarCalificacion" data-id="{{ estudiante.id_calificacion }}">Modificar</a>
+                    <div class="modal fade" id="modalModificarCalificacion" tabindex="-1" aria-labelledby="modalModificarCalificacionLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="modalModificarCalificacionLabel">Modificar Calificación</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                        <form id="form-modificar-calificacion" method="post" action="">
+                            <label for="calificacion">Nueva Calificación:</label>
+                            <input type="number" id="calificacion" name="calificacion" step="0.01" required class="form-control">
+                            <input type="hidden" id="calificacion_id" name="id_calificacion">
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="submit" form="form-modificar-calificacion" class="btn btn-primary">Guardar Cambios</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    var modalModificarCalificacion = document.getElementById('modalModificarCalificacion');
+    modalModificarCalificacion.addEventListener('show.bs.modal', function (event) {
+        var button = event.relatedTarget;
+        
+        var calificacionId = button.getAttribute('data-id');
+        
+        var inputCalificacionId = modalModificarCalificacion.querySelector('#calificacion_id');
+        inputCalificacionId.value = calificacionId;
+
+        var form = modalModificarCalificacion.querySelector('#form-modificar-calificacion');
+        form.action = '/calificacion/modificar/' + calificacionId;
+    });
+    </script>
+                    <a href="{{ path('eliminar_estudiante', { 'id': estudiante.id_estudiante }) }}" class="btn-eliminar" onclick="return confirm('¿Estás seguro de que deseas eliminar este estudiante?');">Eliminar</a>
+                </td>
+            </tr>
+    {% endfor %}
+    </tbody>
+</table>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+{% endblock %}

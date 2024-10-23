@@ -1,0 +1,10 @@
+twig:
+    file_name_pattern: '*.twig'
+   
+    globals:
+        asset: '@assets.packages' 
+
+
+when@test:
+    twig:
+        strict_variables: true
