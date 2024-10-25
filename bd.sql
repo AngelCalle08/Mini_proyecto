@@ -8,7 +8,7 @@ CREATE TABLE asignatura (
 );
 CREATE TABLE calificacion (
   id_calificacion SERIAL PRIMARY KEY,
-  calificacion NUMERIC(2, 1),
+  calificacion NUMERIC(1, 2),
   id_estudiante INT NOT NULL,
   id_asignatura INT NOT NULL,
   FOREIGN KEY (id_estudiante) REFERENCES estudiante(id_estudiante),
